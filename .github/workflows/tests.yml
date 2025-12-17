@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  latest_go: "1.24.x"
+  latest_go: "1.25.x"
   GO111MODULE: on
 
 jobs:
@@ -22,17 +22,17 @@ jobs:
       matrix:
         include:
           - job_name: Linux
-            go: 1.24.x
+            go: 1.25.x
             os: ubuntu-latest
             check_changelog: true
 
           - job_name: Linux (race)
-            go: 1.24.x
+            go: 1.25.x
             os: ubuntu-latest
             test_opts: "-race"
 
           - job_name: Linux
-            go: 1.23.x
+            go: 1.24.x
             os: ubuntu-latest
 
     name: ${{ matrix.job_name }} Go ${{ matrix.go }}
@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Go ${{ matrix.go }}
         uses: actions/setup-go@v6
@@ -78,7 +78,7 @@ jobs:
       checks: write
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Go ${{ env.latest_go }}
         uses: actions/setup-go@v6
@@ -86,10 +86,10 @@ jobs:
           go-version: ${{ env.latest_go }}
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         with:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
-          version: v1.64.8
+          version: v2.4.0
           args: --verbose --timeout 5m
 
         # only run golangci-lint for pull requests, otherwise ALL hints get
